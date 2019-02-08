@@ -1,0 +1,23 @@
+---
+-   name: Yum Installations
+    yum: name={{item}}
+    with_items:
+      - python-setuptools
+      - git
+      - docker
+    tags: docker
+
+-   name: Install Pypi
+    easy_install: name=pip
+    tags: docker
+
+-   name: Pip Installations
+    pip: name={{item}}
+    with_items:
+      - docker-py
+      - docker-compose
+    tags: docker
+
+-   name: Make sure Docker is running
+    service: name=docker state=running
+    tags: docker

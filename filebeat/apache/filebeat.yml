@@ -1,0 +1,27 @@
+filebeat.prospectors: 
+    -
+      input_type: log 
+      document_type: apache-access
+      paths: 
+        - /var/log/apache2/other_vhosts_access.log
+    - 
+      input_type: log
+      document_type: apache-error
+      paths: 
+        - /var/log/apache2/error.log
+
+registry_file:
+   - /var/lib/filebeat/registry
+
+output.logstash:
+   hosts:
+      - logstash:5044
+   index: apache
+
+logging:
+   to_files: true
+files:
+   path:
+       - /var/log/filebeat
+   name: filebeat
+   level: error

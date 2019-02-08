@@ -1,0 +1,23 @@
+version: '2'
+services:
+  logstash:
+    start_on_create: true
+  elasticsearch:
+    start_on_create: true
+  nginx:
+    retain_ip: true
+    start_on_create: true
+  filebeatnginx:
+    start_on_create: true
+  filebeatapache:
+    start_on_create: true
+  php:
+    start_on_create: true
+  dbmain:
+    scale: 1
+    start_on_create: true
+  kibana:
+    start_on_create: true
+  db:
+    start_on_create: true
+

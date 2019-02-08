@@ -1,0 +1,38 @@
+node {
+    def app
+
+    stage('Clone repository') {
+        /* Let's make sure we have the repository cloned to our workspace */
+
+        checkout scm
+    }
+
+    stage('Build image') {
+        /* This builds the actual image; synonymous to
+         * docker build on the command line */
+
+       sh "docker build -t mt1-lrw.travelline.lan:5000/logstash ./logstash/"
+       sh "docker build -t mt1-lrw.travelline.lan:5000/apache ./apache/php/"
+       sh "docker build -t mt1-lrw.travelline.lan:5000/mariadb ./db"
+       sh "docker build -t mt1-lrw.travelline.lan:5000/filebeatnginx ./filebeat/nginx/"
+       sh "docker build -t mt1-lrw.travelline.lan:5000/filebeatapache ./filebeat/apache/"
+       sh "docker build -t mt1-lrw.travelline.lan:5000/nginx ./nginx/nginx"
+       sh "docker build -t mt1-lrw.travelline.lan:5000/kibana ./kibana/"
+       sh "docker build -t mt1-lrw.travelline.lan:5000/elasticsearch ./elasticsearch/"
+    }
+    
+    stage('Push images') {
+       sh "docker push mt1-lrw.travelline.lan:5000/logstash"
+       sh "docker push mt1-lrw.travelline.lan:5000/apache"
+       sh "docker push mt1-lrw.travelline.lan:5000/mariadb"
+       sh "docker push mt1-lrw.travelline.lan:5000/filebeatnginx"
+       sh "docker push mt1-lrw.travelline.lan:5000/filebeatapache"
+       sh "docker push mt1-lrw.travelline.lan:5000/nginx"
+       sh "docker push mt1-lrw.travelline.lan:5000/kibana"
+       sh "docker push mt1-lrw.travelline.lan:5000/elasticsearch"
+    }
+    
+    stage('Upgrade Rancher services') {
+       sh "rancher up --stack root --force-upgrade -d --confirm-upgrade"
+    }
+}

@@ -1,0 +1,4 @@
+- name: Copy certs for registry
+  copy:
+    src: certs/ 
+    dest: /etc/docker/certs.d/mt1-lrw.travelline.lan:5000/

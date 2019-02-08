@@ -1,0 +1,27 @@
+filebeat.prospectors: 
+    -
+      input_type: log 
+      document_type: nginx-access
+      paths: 
+        - /etc/logs/nginx/access.log
+    - 
+      input_type: log
+      document_type: nginx-error
+      paths: 
+        - /var/log/nginx/error.log
+
+registry_file:
+   - /var/lib/filebeat/registry
+
+output.logstash:
+   hosts:
+      - logstash:5044
+   index: nginx
+
+logging:
+   to_files: true
+files:
+   path:
+       - /var/log/filebeat
+   name: filebeat
+   level: error
